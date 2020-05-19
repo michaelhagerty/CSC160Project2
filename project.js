@@ -1,6 +1,21 @@
 var dur = 1000
 
 
+//tooltip
+var drawToolTip = function(team)
+{
+
+var texttooltip = d3.select("#tooltip")
+		.classed("hidden",false)
+		.append("div")
+	texttooltip.append("div")
+		.classed("tt-Title",true)
+		.text("Team Name:"+function(team){return team.common_name});
+
+}
+
+
+
 var drawScatter = function(teams,target,
               xScale,yScale,xProp,yProp)
 {
@@ -39,6 +54,29 @@ d3.select(target)
         return yScale(team[yProp]);    
     })
     .attr("r",4)
+	.on("mouseover", function(team)
+		   {
+			if(! d3.select(this).classed("off"))
+				{
+				d3.selectAll("circle")
+					.classed("fade", true)
+				d3.select(this)
+					.classed("fade", false)
+					.raise()
+				texttooltip(student)	;}
+				
+		})
+		.on("mouseout", function(team)
+		   {
+			if(! d3.select(this).classed("off"))
+				{
+					d3.select("circle")
+						.classed("fade", false);
+				}
+			d3.select("tooltip")
+				.classed("hidden",true)
+			
+		})
 		
 }
 
@@ -192,6 +230,5 @@ function(err)
 {
    console.log("Error Loading data:",err);
 });
-
 
 
